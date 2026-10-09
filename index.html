@@ -454,14 +454,28 @@ function showResult(){
 let niveau="Participant";
 
 if(score===10){
-niveau="🏆 Champion Michelin";
+    niveau="🏆 Champion Michelin";
 }
 else if(score>=8){
-niveau="🥇 Ambassadeur Michelin";
+    niveau="🥇 Ambassadeur Michelin";
 }
 else if(score>=5){
-niveau="🥈 Expert Michelin";
+    niveau="🥈 Expert Michelin";
 }
+
+// ENREGISTREMENT DU RESULTAT DANS GOOGLE SHEETS
+fetch("https://script.google.com/macros/s/AKfycbws5aGCr4Uphs72H-UTKUeWkEyteiFXb_wPv_W8cbsb0PrxvZksO7qJYt8uKshGbGv0/exec", {
+
+    method: "POST",
+
+    body: JSON.stringify({
+        nom: document.getElementById("nom").value,
+        prenom: document.getElementById("prenom").value,
+        societe: document.getElementById("societe").value,
+        score: score + "/10"
+    })
+
+}).catch(error => console.log(error));
 
 document.getElementById("quiz").classList.add("hidden");
 
