@@ -394,38 +394,46 @@ Valider
 
 function validateAnswer(){
 
-const rep =
-document.querySelector('input[name="answer"]:checked');
+    const rep =
+    document.querySelector('input[name="answer"\]:checked');
 
-if(!rep){
-alert("Veuillez sélectionner une réponse.");
-return;
-}
+    if(!rep){
+        alert("Veuillez sélectionner une réponse.");
+        return;
+    }
 
-if(parseInt(rep.value)===questions[current].correct){
-score++;
-}
+    const bonneReponse =
+        parseInt(rep.value) === questions[current].correct;
 
-document.getElementById("explication").innerHTML=`
+    if(bonneReponse){
+        score++;
+    }
 
-<div class="explanation">
+    document.getElementById("explication").innerHTML = `
+        <div class="explanation"
+             style="
+                background:${bonneReponse ? '#eefbe8' : '#ffeaea'};
+                border-left:5px solid ${bonneReponse ? 'green' : 'red'};
+             ">
+             
+            <strong style="color:${bonneReponse ? 'green' : 'red'}">
+                ${bonneReponse ? '✅ Bonne réponse !' : '❌ Mauvaise réponse !'}
+            </strong>
 
-<strong>Explication :</strong><br><br>
+            <br><br>
 
-${questions[current].exp}
+            ${questions[current].exp}
 
-<br><br>
+            <br><br>
 
-<button onclick="nextQuestion()">
-${current===questions.length-1 ?
-"Voir mon résultat" :
-"Question suivante"}
-</button>
+            <button onclick="nextQuestion()">
+                ${current===questions.length-1
+                    ? "Voir mon résultat"
+                    : "Question suivante"}
+            </button>
 
-</div>
-
-`;
-
+        </div>
+    `;
 }
 
 function nextQuestion(){
