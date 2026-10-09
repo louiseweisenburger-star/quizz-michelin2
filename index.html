@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Le Défi MICHELIN</title>
+
+<style>
+body{
+    margin:0;
+    font-family:Arial, sans-serif;
+    background:linear-gradient(
+        180deg,
+        #0055A4 0%,
+        #0B6BC2 20%,
+        #f5f7fa 20%,
+        #f5f7fa 100%
+    );
+    min-height:100vh;
+}
+
+
+header{
+    background:#0055A4;
+    color:white;
+    text-align:center;
+    padding:20px;
+    box-shadow:0 4px 15px rgba(0,0,0,.2);
+}
+
+.logo{
+    width:90px;
+    height:auto;
+    display:block;
+    margin:0 auto 10px auto;
+}
+
+.container{
+    max-width:900px;
+    margin:20px auto;
+    padding:20px;
+}
+
+.card{
+    background:white;
+    border-radius:20px;
+    padding:25px;
+    box-shadow:0 6px 20px rgba(0,0,0,.12);
+}
+
+.badges{
+    background:#FFD100;
+    color:#000;
+    padding:15px;
+    border-radius:12px;
+    max-width:500px;
+    margin:20px auto;
+    font-weight:bold;
+    line-height:30px;
+}
+
+.hero-image,
+.question-image{
+    width:100%;
+    max-height:300px;
+    object-fit:contain;
+    margin:20px 0;
+}
+
+input[type=text]{
+    width:100%;
+    padding:12px;
+    margin-bottom:15px;
+    border:1px solid #ccc;
+    border-radius:8px;
+}
+
+button{
+    background:#0055A4;
+    color:white;
+    border:none;
+    padding:14px 24px;
+    border-radius:12px;
+    cursor:pointer;
+    font-weight:bold;
+    font-size:16px;
+    transition:0.3s;
+}
+
+button:hover{
+    background:#003e7e;
+    transform:translateY(-1px);
+}
+
+.option{
+    border:1px solid #ddd;
+    border-radius:10px;
+    padding:12px;
+    margin-bottom:10px;
+}
+
+.option:hover{
+    background:#eef5ff;
+}
+
+.hidden{
+    display:none;
+}
+
+.progress{
+    width:100%;
+    background:#d9d9d9;
+    height:20px;
+    border-radius:30px;
+    overflow:hidden;
+    margin-bottom:20px;
+}
+
+.progress-bar{
+    height:20px;
+    background:#FFD100;
+    border-radius:30px;
+}
+
+.explanation{
+    background:#eefbe8;
+    border-left:5px solid green;
+    padding:15px;
+    margin-top:15px;
+}
+
+.center{
+    text-align:center;
+}
+
+.score{
+    font-size:60px;
+    color:#0055A4;
+    font-weight:bold;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+
+<img
+    src="img/logo-michelin.png"
+    class="logo"
+    alt="Michelin">
+
+<h1>🏆 Le Défi MICHELIN</h1>
+
+<p>
+10 questions pour tester vos connaissances sur l'univers MICHELIN.
+</p>
+
+<div class="badges">
+✅ Groupe MICHELIN<br>
+✅ Tourisme & Camionnette (TC4)<br>
+✅ Poids Lourds<br>
+✅ Agricole
+</div>
+
+</header>
+
+<div class="container">
+
+<div id="intro" class="card">
+
+<h2>Bienvenue au Défi MICHELIN</h2>
+
+<p>
+Merci de renseigner vos informations avant de commencer.
+</p>
+
+<label>
+<strong>Nom *</strong>
+</label>
+<input type="text" id="nom">
+
+<label>
+<strong>Prénom *</strong>
+</label>
+<input type="text" id="prenom">
+
+<label>
+<strong>Raison sociale (facultatif)</strong>
+</label>
+<input type="text" id="societe">
+
+<div class="center" style="margin-top:20px;">
+<button onclick="startQuiz()">
+🚀 Commencer le Quiz
+</button>
+</div>
+
+</div>
+
+<div id="quiz" class="card hidden"></div>
+
+<div id="result" class="card hidden"></div>
+
+</div>
+
+<script>
+
+function startQuiz(){
+
+const nomField = document.getElementById("nom");
+const prenomField = document.getElementById("prenom");
+
+if(
+  !nomField.value.trim() ||
+  !prenomField.value.trim()
+){
+  alert("Merci de renseigner votre nom et prénom.");
+  return;
+}
+
+document.getElementById("intro").classList.add("hidden");
+document.getElementById("quiz").classList.remove("hidden");
+
+showQuestion();
+
+}
+
+
+const questions = [
+
+{
+theme:"Groupe MICHELIN",
+image:"img/logo-michelin.png",
+question:"Où est née l'entreprise Michelin ?",
+answers:["Clermont-Ferrand","Lyon","Lille","Bordeaux"],
+correct:0,
+exp:" À Clermont-Ferrand, en 1889, fondée par les frères André et Édouard Michelin."
+},
+
+{
+theme:"Groupe MICHELIN",
+image:"img/radial.png",
+question:"Quelle innovation Michelin a-t-il popularisée en 1946 ?",
+answers:["Le pneu radial","Le pneu plein","Le pneu à chambre renforcée","Le pneu à double bande de roulement"],
+correct:0,
+exp:"Le pneu radial, aujourd'hui standard sur la quasi-totalité des véhicules"
+},
+
+{
+theme:"Groupe MICHELIN",
+image:"img/performances.png",
+question:"Quelle phrase met le mieux en avant les performances Michelin ?",
+answers:[
+"Les pneus Michelin sont conçus pour offrir le meilleur ensemble de performances du premier au dernier kilomètre.",
+"Ils privilégient uniquement la vitesse.",
+"Ils privilégient uniquement la longévité.",
+"Ils sont uniquement conçus pour l'été."
+],
+correct:0,
+exp:"La performance globale est au cœur de la stratégie Michelin."
+},
+
+{
+theme:"TC4",
+image:"img/crossclimate3.png",
+question:"Quelle est la longévité du CrossClimate 3 par rapport au CrossClimate 2 ?",
+answers:["Equivalente","5 %","10 %","15 %"],
+correct:3,
+exp:"+15 % de longévité par rapport au CrossClimate 2. -4 % de distance de freinage sur route mouillée. Réduction du bruit et gain d'autonomie sur véhicules électriques."
+},
+
+{
+theme:"TC4",
+image:"img/primacy5.png",
+question:"De quel taux le Primacy 5 Energy améliore-t-il le freinage sur sol mouillé par rapport au Primacy 4+ ?",
+answers:["2 %","4 %","6 %","8 %"],
+correct:3,
+exp:"Il améliore sa distance de freinage sur sol mouillé de 8 % par rapport à son prédécesseur, et ce aussi bien à l'état neuf qu'usé à 2 mm de profondeur."
+},
+
+{
+theme:"TC4",
+image:"img/primacy5.png",
+question:"Quel est le classement de l'étiquetage européen du MICHELIN Primacy 5 Energy pour le freinage sur sol mouillé, l'efficacité énergétique et le bruit ?",
+answers:[
+    "ABA",
+    "BAA",
+    "AAA",
+    "AAC"
+],
+correct:2,
+exp:"Le MICHELIN Primacy 5 est le premier pneu été MICHELIN premium noté AAA, combinant sécurité, efficacité énergétique et faible niveau sonore, tout en conservant une excellente longévité."
+},
+
+{
+theme:"PL",
+image:"img/profondeur-pl.png",
+question:"Quelle est la profondeur légale minimale de démonte d'un pneumatique poids lourd ?",
+answers:["1 mm","1,6 mm","2 mm","3 mm"],
+correct:0,
+exp:"La profondeur minimale est de 1 mm."
+},
+
+{
+theme:"PL",
+image:"img/xmultit2.png",
+question:"Quel est le nouveau profil Michelin 385/65R22.5 ?",
+answers:["X Multi T","X Multi T+","X Multi T2","X Line Energy T"],
+correct:2,
+exp:"Le X Multi T2. Plus de longévité et de mobilité, quelles que soient les conditions climatiques.Parcourez plus de kilomètres.Transport plus écologique.Transport par tous les temps"
+},
+
+{
+theme:"AG",
+image:"img/agribib.png",
+question:"Qu'est-ce qui tient la charge dans un ensemble monté ?",
+answers:["Le flanc","La jante","L'essieu","L'air"],
+correct:3,
+exp:"C'est principalement l'air sous pression contenu dans le pneu qui supporte la charge. Le pneu et sa structure accompagnent cette fonction, mais c'est l'air qui assure l'essentiel du portage."
+},
+
+{
+theme:"AG",
+image:"img/pneu-vf.png",
+question:"Que signifie la norme VF ?",
+answers:["Very High Flexion","Verified Flexion","Vulcanisation Française","Version Française"],
+correct:0,
+exp:"VF (Very High Flexion) désigne une technologie permettant au pneu de se déformer davantage. Il peut ainsi supporter une charge plus importante ou travailler à pression plus faible, ce qui limite le tassement des sols et améliore la traction."
+}
+
+];
+
+let current=0;
+let score=0;
+
+function startQuiz(){
+
+const nomField = document.getElementById("nom");
+const prenomField = document.getElementById("prenom");
+
+if(
+    !nomField.value.trim() ||
+    !prenomField.value.trim()
+){
+    alert("Merci de renseigner votre nom et prénom.");
+    return;
+}
+
+document.getElementById("intro").classList.add("hidden");
+document.getElementById("quiz").classList.remove("hidden");
+
+showQuestion();
+
+}
+
+function showQuestion(){
+
+const q = questions[current];
+
+document.getElementById("quiz").innerHTML = `
+
+<div class="progress">
+<div class="progress-bar" style="width:${((current+1)/questions.length)*100}%"></div>
+</div>
+
+<p>Question ${current+1} / ${questions.length}</p>
+
+<h3>${q.theme}</h3>
+
+<img src="${q.image}" class="question-image">
+
+<h2>${q.question}</h2>
+
+${q.answers.map((a,i)=>`
+<div class="option">
+<label>
+<input type="radio" name="answer" value="${i}">
+${a}
+</label>
+</div>
+`).join('')}
+
+<button onclick="validateAnswer()">
+Valider
+</button>
+
+<div id="explication"></div>
+
+`;
+
+}
+
+function validateAnswer(){
+
+const rep =
+document.querySelector('input[name="answer"]:checked');
+
+if(!rep){
+alert("Veuillez sélectionner une réponse.");
+return;
+}
+
+if(parseInt(rep.value)===questions[current].correct){
+score++;
+}
+
+document.getElementById("explication").innerHTML=`
+
+<div class="explanation">
+
+<strong>Explication :</strong><br><br>
+
+${questions[current].exp}
+
+<br><br>
+
+<button onclick="nextQuestion()">
+${current===questions.length-1 ?
+"Voir mon résultat" :
+"Question suivante"}
+</button>
+
+</div>
+
+`;
+
+}
+
+function nextQuestion(){
+
+current++;
+
+if(current<questions.length){
+showQuestion();
+}
+else{
+showResult();
+}
+
+}
+
+function showResult(){
+
+let niveau="Participant";
+
+if(score===10){
+niveau="🏆 Champion Michelin";
+}
+else if(score>=8){
+niveau="🥇 Ambassadeur Michelin";
+}
+else if(score>=5){
+niveau="🥈 Expert Michelin";
+}
+
+document.getElementById("quiz").classList.add("hidden");
+
+document.getElementById("result").classList.remove("hidden");
+
+document.getElementById("result").innerHTML=`
+
+<div class="center">
+
+<h1>🏆 Résultat du Défi MICHELIN</h1>
+
+<div class="score">
+${score}/10
+</div>
+
+<h2>${prenom.value} ${nom.value}</h2>
+
+${societe.value ? `<p>${societe.value}</p>` : ""}
+
+<h2>${niveau}</h2>
+
+<p>Merci pour votre participation.</p>
+
+</div>
+
+`;
+
+}
+
+</script>
+
+</body>
+</html>
