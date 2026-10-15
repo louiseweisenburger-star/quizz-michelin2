@@ -154,14 +154,12 @@ button:hover{
 <h1>🏆 Le Défi MICHELIN</h1>
 
 <p>
-10 questions pour tester vos connaissances sur l'univers MICHELIN.
+7 questions pour tester vos connaissances sur l'univers MICHELIN.
 </p>
 
 <div class="badges">
 ✅ Groupe MICHELIN<br>
 ✅ Tourisme & Camionnette (TC4)<br>
-✅ Poids Lourds<br>
-✅ Agricole
 </div>
 
 </header>
@@ -295,40 +293,13 @@ exp:"Le MICHELIN Primacy 5 est le premier pneu été MICHELIN premium noté AAA,
 },
 
 {
-theme:"PL",
-image:"profondeur-pl.png",
-question:"Quelle est la profondeur légale minimale de démonte d'un pneumatique poids lourd ?",
-answers:["1 mm","1,6 mm","2 mm","3 mm"],
-correct:0,
-exp:"La profondeur minimale est de 1 mm."
+  theme:"TC4",
+  image:"logo-michelin.png",
+  question:"Quel est le montant maximum de remboursement de l'opération nationale MICHELIN HIVER 2026 ?",
+  answers:["60€","90€","100€","120€"],
+  correct:3,
+  exp:"L'opération nationale MICHELIN se déroule du 05/10 au 29/11. Elle est ouverte aux professionnels et particuliers et permet de se faire rembourser jusqu'à 120€."
 },
-
-{
-theme:"PL",
-image:"xmultit2.png",
-question:"Quel est le nouveau profil Michelin 385/65R22.5 ?",
-answers:["X Multi T","X Multi T+","X Multi T2","X Line Energy T"],
-correct:2,
-exp:"Le X Multi T2. Plus de longévité et de mobilité, quelles que soient les conditions climatiques.Parcourez plus de kilomètres.Transport plus écologique.Transport par tous les temps"
-},
-
-{
-theme:"AG",
-image:"agribib.png",
-question:"Qu'est-ce qui tient la charge dans un ensemble monté ?",
-answers:["Le flanc","La jante","L'essieu","L'air"],
-correct:3,
-exp:"C'est principalement l'air sous pression contenu dans le pneu qui supporte la charge. Le pneu et sa structure accompagnent cette fonction, mais c'est l'air qui assure l'essentiel du portage."
-},
-
-{
-theme:"AG",
-image:"pneu-vf.png",
-question:"Que signifie la norme VF ?",
-answers:["Very High Flexion","Verified Flexion","Vulcanisation Française","Version Française"],
-correct:0,
-exp:"VF (Very High Flexion) désigne une technologie permettant au pneu de se déformer davantage. Il peut ainsi supporter une charge plus importante ou travailler à pression plus faible, ce qui limite le tassement des sols et améliore la traction."
-}
 
 ];
 
@@ -451,16 +422,22 @@ showResult();
 
 function showResult(){
 
-let niveau="Participant";
+let niveau="🎯 Participant Michelin";
 
-if(score===10){
+if(score===7){
     niveau="🏆 Champion Michelin";
 }
-else if(score>=8){
+else if(score>=6){
     niveau="🥇 Ambassadeur Michelin";
 }
-else if(score>=5){
+else if(score>=4){
     niveau="🥈 Expert Michelin";
+}
+else if(score>=2){
+    niveau="🥉 Conseiller Michelin";
+}
+else{
+    niveau="🚗 Découvreur Michelin";
 }
 
 // ENREGISTREMENT DU RESULTAT DANS GOOGLE SHEETS
@@ -472,14 +449,17 @@ fetch("https://script.google.com/macros/s/AKfycbws5aGCr4Uphs72H-UTKUeWkEyteiFXb_
         nom: document.getElementById("nom").value,
         prenom: document.getElementById("prenom").value,
         societe: document.getElementById("societe").value,
-        score: score + "/10"
+        score: score + "/7"
     })
 
 }).catch(error => console.log(error));
 
 document.getElementById("quiz").classList.add("hidden");
-
 document.getElementById("result").classList.remove("hidden");
+
+const nom = document.getElementById("nom").value;
+const prenom = document.getElementById("prenom").value;
+const societe = document.getElementById("societe").value;
 
 document.getElementById("result").innerHTML=`
 
@@ -488,12 +468,12 @@ document.getElementById("result").innerHTML=`
 <h1>🏆 Résultat du Défi MICHELIN</h1>
 
 <div class="score">
-${score}/10
+${score}/7
 </div>
 
-<h2>${prenom.value} ${nom.value}</h2>
+<h2>${prenom} ${nom}</h2>
 
-${societe.value ? `<p>${societe.value}</p>` : ""}
+${societe ? `<p>${societe}</p>` : ""}
 
 <h2>${niveau}</h2>
 
